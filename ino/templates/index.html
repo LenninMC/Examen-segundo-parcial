@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Motor DC | Sensor de Temperatura</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="top-bar">
+            <div class="logo">
+                <span class="logo-icon">🌡️</span>
+                <span class="logo-text">CONTROL DE TEMPERATURA</span>
+            </div>
+            <div class="system-status">
+                <span class="status-indicator active"></span>
+                <span class="status-text">Sistema activo</span>
+            </div>
+            <a href="/logout" class="logout-link">⏻ Cerrar sesión</a>
+        </div>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <!-- Tarjeta del sensor de temperatura -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🌡️ SENSOR DE TEMPERATURA</h3>
+                        <span class="badge">LM35 / A0</span>
+                    </div>
+                    <div class="sensor-value" id="temp-valor">0.0</div>
+                    <div class="sensor-range">0 — 100 °C</div>
+                    <div class="threshold-indicator">
+                        <div class="threshold-bar">
+                            <div class="threshold-fill" id="temp-bar" style="width: 0%"></div>
+                        </div>
+                        <div class="threshold-labels">
+                            <span>0°C</span>
+                            <span>20°C</span>
+                            <span>35°C</span>
+                            <span>100°C</span>
+                        </div>
+                    </div>
+                    <div class="sensor-note">
+                        <small>⚠️ Temperatura baja = motor apagado | Temperatura alta = motor encendido</small>
+                    </div>
+                </div>
+
+                <!-- Tarjeta de estado del motor -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🔧 ESTADO DEL MOTOR</h3>
+                        <span class="badge">Puente H L298N</span>
+                    </div>
+                    <div class="motor-status">
+                        <div class="motor-info">
+                            <span class="motor-label">Velocidad PWM:</span>
+                            <span class="motor-value" id="velocidad-valor">0</span>
+                            <span class="motor-unit">/255</span>
+                        </div>
+                        <div class="motor-bar-container">
+                            <div class="motor-bar" id="motor-bar" style="width: 0%"></div>
+                        </div>
+                        <div class="motor-info">
+                            <span class="motor-label">Zona de temperatura:</span>
+                            <span class="motor-value" id="zona-activa">---</span>
+                        </div>
+                        <div class="zona-indicators">
+                            <div class="zona" id="zona-1">Zona 1<br><small>Temperatura Baja</small><br>&lt; 20°C</div>
+                            <div class="zona" id="zona-2">Zona 2<br><small>Temperatura Media</small><br>20°C - 35°C</div>
+                            <div class="zona" id="zona-3">Zona 3<br><small>Temperatura Alta</small><br>&gt; 35°C</div>
+                        </div>
+                        <div class="motor-info" style="margin-top: 15px;">
+                            <span class="motor-label">Acción:</span>
+                            <span class="motor-value" id="accion-motor">---</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta de información del sistema -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🔌 INFORMACIÓN DEL SISTEMA</h3>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-row">
+                            <span class="info-label">Última actualización:</span>
+                            <span class="info-value" id="ultima-actualizacion">--:--:--</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Enlace TCP:</span>
+                            <span class="info-value">127.0.0.1:5001</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Puerto serial:</span>
+                            <span class="info-value">/dev/ttyACM0 @ 115200</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Sensor:</span>
+                            <span class="info-value">LM35 (Temperatura)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="card chart-card">
+                    <div class="card-header">
+                        <h3>📈 MONITOREO EN TIEMPO REAL</h3>
+                        <div class="chart-controls">
+                            <span class="badge">Temperatura (°C)</span>
+                            <span class="badge">Actualización 1s</span>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="mainChart"></canvas>
+                    </div>
+                    <div class="chart-footer">
+                        <div class="chart-legend">
+                            <span class="legend-item">
+                                <span class="legend-color red"></span> Temperatura (°C)
+                            </span>
+                            <span class="legend-item">
+                                <span class="legend-color threshold"></span> Límites de zona
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
